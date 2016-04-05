@@ -1,0 +1,5 @@
+# virtualenv
+itap
+
+# ignore compiled files
+*.pyc
