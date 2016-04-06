@@ -1,5 +1,6 @@
 import datetime
 import time
+import sys
 import praw
 import schedule
 
@@ -7,10 +8,11 @@ import schedule
 WEEKDAY_MONDAY = 0
 timekeeping = -1
 subreddit = 'itookapicture'
+debug = True if len(sys.argv) == 2 and sys.argv[1] == '--debug' else False
 
 # generate instance of praw
 print 'Logging in...'
-user_agent = "r/itookapicture MLM announcer v1.0 by /u/tehusername"
+user_agent = "r/itookapicture MLM announcer v1.0.1 by /u/tehusername"
 r = praw.Reddit(user_agent = user_agent)
 r.login(disable_warning=True)
 print 'Login successful...'
@@ -37,9 +39,15 @@ def update_sidebar(r, data):
 
         r.update_settings(r.get_subreddit(subreddit), description=token.join(desc))
         timekeeping = data['delta_time']['const']
+
+        if debug:
+            with open("log.txt", "a") as log:
+                log.write(str(datetime.datetime.utcnow()) + '\n')
+
         print 'Update successful! Sleeping...'
     else:
         print 'Not yet time to update. Sleeping...'
+
 def get_content():
     print 'Computing date deltas...'
     dt = datetime.datetime.utcnow()

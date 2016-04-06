@@ -3,3 +3,6 @@ itap
 
 # ignore compiled files
 *.pyc
+
+# ignore log file
+log.txt

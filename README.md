@@ -26,3 +26,7 @@ itap/bin/pip install -r requirements.txt
 # run the bot
 itap/bin/python itap_bot.py
 ```
+
+
+### Execution flags
+* `--debug` enables logging of date and time at which the sidebar was updated successfully
