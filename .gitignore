@@ -4,5 +4,6 @@ itap
 # ignore compiled files
 *.pyc
 
-# ignore log file
+# ignore generated files
 log.txt
+time.txt

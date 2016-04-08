@@ -2,7 +2,12 @@
 
 ---
 
-Reddit bot for [r/itookapicture](https://www.reddit.com/r/itookapicture). Updates countdown in the sidebar for Mona Lisa Monday.
+Reddit bot for [r/itookapicture](https://www.reddit.com/r/itookapicture)
+
+### Feature List
+
+* Updates countdown in the sidebar for Mona Lisa Monday
+* Automatically removes MLM related submissions on a non-monday
 
 ### Prerequisites
 * Python 2.7.9 and above (developed on Python 2.7.11)
@@ -29,4 +34,4 @@ itap/bin/python itap_bot.py
 
 
 ### Execution flags
-* `--debug` enables logging of date and time at which the sidebar was updated successfully
+* `--debug` enables logging of relevant states of the bot.
