@@ -136,7 +136,7 @@ def check_submissions(data):
 
         # loops thru all posts
         for post in praw.helpers.submissions_between(**sub_helper_kwargs):
-            if config['mlm_string'] in post.title:
+            if config['mlm_string'] in post.title and post.approved_by == None:
                 print 'Detected violator: %s, processing...' % post.id
                 warn_string = config['warning_string'].replace('[time]', data['delta_time']['time']).replace('\n', '\n\n')
                 post.add_comment(warn_string).distinguish() # adds comment then distinguish it
