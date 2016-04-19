@@ -22,11 +22,17 @@ debug = True if len(sys.argv) == 2 and sys.argv[1] == '--debug' else False
 
 # generate instance of praw
 print 'Logging in...'
-user_agent = "r/itookapicture MLM announcer v2.0.0 by /u/tehusername"
-r = praw.Reddit(user_agent = user_agent)
-r.login(disable_warning=True)
-print 'Login successful...'
 
+user_agent = "r/itookapicture MLM announcer v2.0.1 by /u/tehusername"
+while True:
+    try:
+        r = praw.Reddit(user_agent = user_agent)
+        r.login(os.environ['ITAP_USERNAME'], os.environ['ITAP_PASSWORD'], disable_warning=True)
+        print 'Login successful...'
+        break
+    except:
+        print 'Error Logging in. Retrying in 1 minute...'
+        time.sleep(60)
 
 # settings for submission_between helper
 sub_helper_kwargs = {
@@ -141,8 +147,11 @@ def check_submissions(data):
 
 def run_update():
     data = get_content()
-    update_sidebar(data)
-    check_submissions(data)
+    try:
+        update_sidebar(data)
+        check_submissions(data)
+    except:
+        print config['hiccup_string']
 
 if __name__ == '__main__':
     print 'Initial ITAP_bot run'
