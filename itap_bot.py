@@ -63,7 +63,13 @@ def update_sidebar(data):
         else:
             desc[index[0]] = announce_text
 
-        r.update_settings(r.get_subreddit(config['subreddit']), description=token.join(desc))
+        sub_settings = {
+            'description': token.join(desc),
+            'key_color': config['key_color'],
+            'show_media_preview': True
+        }
+
+        r.update_settings(r.get_subreddit(config['subreddit']), **sub_settings)
         timekeeping = data['delta_time']['const']
 
         if debug:
@@ -97,17 +103,18 @@ def get_content():
     h, m = map(int, divmod(m, 60))
     d, h = map(int, divmod(h, 24))
     
-    return_time = "less than a minute"
+    return_time = "<1 hour"
     return_const = 0
+
     if d >= 1:
-        return_time = "%d day/s" % (d)
+        if h >= 12:
+            return_time = "%d day/s" % (d+1)
+        else:
+            return_time = "%d day/s" % (d)
         return_const = d
-    elif h >= 1:
+    elif h > 1:
         return_time = "%d hour/s" % (h)
         return_const = h
-    elif m >= 1:
-        return_time = "%d minute/s" % (m)
-        return_const = m
 
     ret['delta_time'] = {'time': return_time, 'const': return_const}
     return ret
@@ -150,7 +157,7 @@ def run_update():
     try:
         update_sidebar(data)
         check_submissions(data)
-    except:
+    except Exception:
         print config['hiccup_string']
 
 if __name__ == '__main__':
