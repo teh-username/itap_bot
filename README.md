@@ -7,7 +7,7 @@ Reddit bot for [r/itookapicture](https://www.reddit.com/r/itookapicture)
 ### Feature List
 
 * Updates countdown in the sidebar for Mona Lisa Monday
-* Automatically removes MLM related submissions on a non-monday
+* Automatically removes non-mod approved MLM related submissions on a non-monday
 
 ### Prerequisites
 * Python 2.7.9 and above (developed on Python 2.7.11)
@@ -31,6 +31,10 @@ itap/bin/pip install -r requirements.txt
 # run the bot
 itap/bin/python itap_bot.py
 ```
+
+
+### Additional Configs
+* Script retrieves credentials via `ITAP_USERNAME` and `ITAP_PASSWORD` environment variables (will migrate to OAuth in the future).
 
 
 ### Execution flags
