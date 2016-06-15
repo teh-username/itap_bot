@@ -66,7 +66,8 @@ def update_sidebar(data):
         sub_settings = {
             'description': token.join(desc),
             'key_color': config['key_color'],
-            'show_media_preview': True
+            'show_media_preview': True,
+            'allow_images': True
         }
 
         r.update_settings(r.get_subreddit(config['subreddit']), **sub_settings)
