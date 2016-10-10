@@ -7,6 +7,11 @@ import sys
 import praw
 import schedule
 
+# system wide flags
+timekeeping = -1
+debug = True if '--debug' in sys.argv[1:] else False
+best_of = True if '--best-of' in sys.argv[1:] else False
+
 
 # Retrieve config
 configParser = ConfigParser.ConfigParser()
@@ -14,10 +19,9 @@ configParser.read('config.ini')
 config = dict(configParser.items('core-settings'))
 config['monday'] = int(config['monday'])
 
-
-# system wide flags
-timekeeping = -1
-debug = True if len(sys.argv) == 2 and sys.argv[1] == '--debug' else False
+# Conditional config/s
+if best_of:
+    config.update(dict(configParser.items('best-of-settings')))
 
 
 # generate instance of praw
