@@ -8,6 +8,7 @@ Reddit bot for [r/itookapicture](https://www.reddit.com/r/itookapicture)
 
 * Updates countdown in the sidebar for Mona Lisa Monday
 * Automatically removes non-mod approved MLM related submissions on a non-monday
+* Aggregates top-level comments of a "Best Of" submission thread (turned off by default)
 
 ### Prerequisites
 * Python 2.7.9 and above (developed on Python 2.7.11)
@@ -39,3 +40,4 @@ itap/bin/python itap_bot.py
 
 ### Execution flags
 * `--debug` enables logging of relevant states of the bot.
+* `--best-of` enables one-time execution of "Best Of" feature.

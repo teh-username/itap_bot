@@ -7,3 +7,4 @@ itap
 # ignore generated files
 log.txt
 time.txt
+best_of_*

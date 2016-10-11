@@ -7,6 +7,7 @@ import sys
 import praw
 import schedule
 
+
 # system wide flags
 timekeeping = -1
 debug = True if '--debug' in sys.argv[1:] else False
@@ -19,15 +20,17 @@ configParser.read('config.ini')
 config = dict(configParser.items('core-settings'))
 config['monday'] = int(config['monday'])
 
-# Conditional config/s
+
+# Add-on Module/s
 if best_of:
-    config.update(dict(configParser.items('best-of-settings')))
+    import imp
+    best_of = imp.load_source('best_of', 'modules/best_of.py')
 
 
 # generate instance of praw
 print 'Logging in...'
 
-user_agent = "r/itookapicture MLM announcer v2.0.1 by /u/tehusername"
+user_agent = "r/itookapicture MLM announcer v3.0.0 by /u/tehusername"
 while True:
     try:
         r = praw.Reddit(user_agent = user_agent)
@@ -45,7 +48,6 @@ sub_helper_kwargs = {
     'newest_first': False,
     'verbosity': 0   
 }
-
 
 def update_sidebar(data):
     global timekeeping
@@ -165,11 +167,16 @@ def run_update():
     except Exception:
         print config['hiccup_string']
 
+
 if __name__ == '__main__':
     print 'Initial ITAP_bot run'
     run_update()
     schedule.every().minute.do(run_update)
     print 'Running on schedule'
+    
+    if best_of != False:
+        best_of.run(r)
+
     while True:
         schedule.run_pending()
         time.sleep(1)
