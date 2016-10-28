@@ -22,6 +22,9 @@ def generate_best_of_lists(r):
     submission.replace_more_comments(limit=None, threshold=0)
     nominations = submission.comments
     for nomination in nominations:
+        if nomination.banned_by is not None:
+            continue
+
         body = nomination.body.lower()
         search = re.search(r'(http(s|):\/\/.*?)(\)| |$)', body, re.M|re.I)
         entry = r.get_submission(search.group(1))
