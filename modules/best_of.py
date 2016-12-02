@@ -27,7 +27,13 @@ def generate_best_of_lists(r):
 
         body = nomination.body.lower()
         search = re.search(r'(http(s|):\/\/.*?)(\)| |$)', body, re.M|re.I)
-        entry = r.get_submission(search.group(1))
+        corrected_url = search.group(1).rsplit('/', 1)[0].replace('://m.', '://www.')
+
+        # ignore bogus urls
+        try:
+            entry = r.get_submission(corrected_url)
+        except:
+            continue
 
         # ignore posts older than this year
         if entry.created_utc < start_timestamp:
