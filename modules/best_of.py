@@ -11,7 +11,7 @@ config['best_of_categories'] = config['best_of_categories'].replace(' ', '').spl
 
 def generate_best_of_lists(r):
     now = datetime.datetime.now()
-    start_timestamp = (datetime.datetime(now.year, 1, 1) - datetime.datetime(1970, 1, 1)).total_seconds()
+    start_timestamp = (datetime.datetime(int(config['best_of_year']), 1, 1) - datetime.datetime(1970, 1, 1)).total_seconds()
 
     entries = {
         'categorized': {},
@@ -27,6 +27,11 @@ def generate_best_of_lists(r):
 
         body = nomination.body.lower()
         search = re.search(r'(http(s|):\/\/.*?)(\)| |$)', body, re.M|re.I)
+
+        # ignore deleted comments
+        if search is None:
+            continue
+
         corrected_url = search.group(1).rsplit('/', 1)[0].replace('://m.', '://www.')
 
         # ignore bogus urls
