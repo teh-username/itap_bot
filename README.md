@@ -35,7 +35,11 @@ itap/bin/python itap_bot.py
 
 
 ### Additional Configs
-* Script retrieves credentials via `ITAP_USERNAME` and `ITAP_PASSWORD` environment variables (will migrate to OAuth in the future).
+* Script retrieves credentials environment variable. Please set the following (more info [here](https://praw.readthedocs.io/en/latest/getting_started/authentication.html#script-application)):
+    * `ITAP_ID`
+    * `ITAP_SECRET`
+    * `ITAP_USERNAME`
+    * `ITAP_PASSWORD`
 
 
 ### Execution flags
