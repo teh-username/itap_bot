@@ -1,12 +1,11 @@
 import calendar
-import ConfigParser
 import datetime
 import time
 import os
 import sys
 import praw
 import schedule
-
+from utils.config_reader import get_config
 
 # system wide flags
 timekeeping = -1
@@ -15,9 +14,7 @@ best_of = True if '--best-of' in sys.argv[1:] else False
 
 
 # Retrieve config
-configParser = ConfigParser.ConfigParser()
-configParser.read('config.ini')
-config = dict(configParser.items('core-settings'))
+config = get_config('core')
 config['monday'] = int(config['monday'])
 
 
@@ -127,7 +124,7 @@ def get_content():
 
     if d >= 1:
         if h >= 12:
-            return_time = "%d day/s" % (d+1)
+            return_time = "%d day/s" % (d + 1)
         else:
             return_time = "%d day/s" % (d)
         return_const = d
@@ -161,7 +158,7 @@ def check_submissions(data):
         # loops thru all posts
         for post in subreddit.submissions(start=last_ts, end=cur_ts):
             if config['mlm_string'] in post.title and post.approved_by is None:
-                print('Detected violator: %s, processing...') % post.id
+                print('Detected violator: %s, processing...' % post.id)
                 warn_string = config['warning_string'].replace(
                     '[time]',
                     data['delta_time']['time']
