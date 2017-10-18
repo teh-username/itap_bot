@@ -11,7 +11,7 @@ Reddit bot for [r/itookapicture](https://www.reddit.com/r/itookapicture)
 * Aggregates top-level comments of a "Best Of" submission thread (turned off by default)
 
 ### Prerequisites
-* Python 2.7.9 and above (developed on Python 2.7.11)
+* Python 2.7.9 and above (developed on Python 3.5.2)
 * [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html)
 * git
 
