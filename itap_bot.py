@@ -6,6 +6,7 @@ import sys
 import praw
 import schedule
 from utils.config_reader import get_config
+from modules.mlm_sidebar_update import run as mlm_run
 
 # system wide flags
 timekeeping = -1
@@ -27,7 +28,7 @@ if best_of:
 # generate instance of praw
 print('Logging in...')
 
-user_agent = "r/itookapicture MLM announcer v4.0.0 by /u/tehusername"
+user_agent = "r/itookapicture MLM announcer v4.1.0 by /u/tehusername"
 
 while True:
     try:
@@ -43,54 +44,6 @@ while True:
     except:
         print('Error Logging in. Retrying in 1 minute...')
         time.sleep(60)
-
-
-def update_sidebar(data):
-    global timekeeping
-    if timekeeping != data['delta_time']['const']:
-        print('Updating %s sidebar...' % config['subreddit'])
-        subreddit = r.subreddit(config['subreddit']).mod
-        token = '\n\n'
-        mark_string = 'Mona Lisa Monday is currently'
-        before_string = '**Posting Suggestions:**'
-        monday = (
-            "Mona Lisa Monday is currently **active**!"
-            "MLM will end in %s."
-        )
-        non_monday = (
-            "Mona Lisa Monday is currently **not active**!"
-            "MLM will begin in %s."
-        )
-
-        desc = subreddit.settings()['description'].split(token)
-        index = [k for k, i in enumerate(desc) if mark_string in i]
-        announce_text = (
-            monday if data['is_monday'] else non_monday
-        ) % (data['delta_time']['time'])
-
-        if not index:
-            index = [k for k, i in enumerate(desc) if before_string in i][0]
-            desc.insert(index, announce_text)
-        else:
-            desc[index[0]] = announce_text
-
-        sub_settings = {
-            'description': token.join(desc),
-            'key_color': config['key_color'],
-            'show_media_preview': True,
-            'allow_images': True
-        }
-
-        subreddit.update(**sub_settings)
-        timekeeping = data['delta_time']['const']
-
-        if debug:
-            with open(config['log_filename'], "a") as log:
-                log.write(str(datetime.datetime.utcnow()) + '\n')
-
-        print('Update successful! Sleeping...')
-    else:
-        print('Not yet time to update. Sleeping...')
 
 
 def get_content():
@@ -183,7 +136,7 @@ def check_submissions(data):
 def run_update():
     data = get_content()
     try:
-        update_sidebar(data)
+        mlm_run(r)
         check_submissions(data)
     except Exception as e:
         print(str(e))
