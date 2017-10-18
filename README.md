@@ -1,7 +1,5 @@
 # r/itookapicture bot [![Build Status](https://travis-ci.org/teh-username/itap_bot.svg?branch=master)](https://travis-ci.org/teh-username/itap_bot)
 
----
-
 Reddit bot for [r/itookapicture](https://www.reddit.com/r/itookapicture)
 
 ### Feature List
