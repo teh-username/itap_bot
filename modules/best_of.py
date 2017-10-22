@@ -47,7 +47,7 @@ def generate_best_of_lists(r):
         # ignore bogus urls
         try:
             entry = r.get_submission(corrected_url)
-        except:
+        except:  # noqa
             continue
 
         # ignore posts older than this year
