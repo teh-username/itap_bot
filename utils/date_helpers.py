@@ -1,4 +1,5 @@
 import datetime
+import time
 
 
 def is_target_day(target_day):
@@ -12,3 +13,7 @@ def convert_seconds_to_dhms(seconds):
     h, m = map(int, divmod(m, 60))
     d, h = map(int, divmod(h, 24))
     return {'days': d, 'hours': h, 'minutes': m, 'seconds': s}
+
+
+def utc_timestamp_now():
+    return str(time.time()).split('.')[0]

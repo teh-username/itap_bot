@@ -1,16 +1,14 @@
-import calendar
 import datetime
 import os
 from utils.config_reader import get_config
+from utils.date_helpers import utc_timestamp_now
 from modules.mlm_sidebar_update import (
     compute_how_much_time_left
 )
 
 
 def notify_violating_submissions(r, config, last_ts):
-    cur_ts = calendar.timegm(
-        datetime.datetime.utcnow().utctimetuple()
-    )
+    cur_ts = utc_timestamp_now()
     time_left = compute_how_much_time_left(
         datetime.datetime.utcnow(),
         int(config['monday'])
@@ -28,9 +26,7 @@ def notify_violating_submissions(r, config, last_ts):
 
 
 def get_last_timestamp(config):
-    last_ts = calendar.timegm(
-        datetime.datetime.utcnow().utctimetuple()
-    )
+    last_ts = utc_timestamp_now()
     # we've been going at it for a while
     if os.path.exists(config['state_filename']):
         with open(config['state_filename'], 'r') as log:
