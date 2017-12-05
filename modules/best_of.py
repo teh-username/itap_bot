@@ -1,10 +1,10 @@
-import ConfigParser
+import configparser
 import datetime
 import re
 import time
 
 # Retrieve config
-configParser = ConfigParser.ConfigParser()
+configParser = configparser.ConfigParser()
 configParser.read('config.ini')
 config = dict(configParser.items('best-of-settings'))
 config['best_of_categories'] = config['best_of_categories'].replace(
@@ -24,10 +24,10 @@ def generate_best_of_lists(r):
         'uncategorized': set()
     }
 
-    submission = r.get_submission(
-        submission_id=config['best_of_nomination_post_id']
+    submission = r.submission(
+        id=config['best_of_nomination_post_id']
     )
-    submission.replace_more_comments(limit=None, threshold=0)
+    submission.comments.replace_more(limit=None)
     nominations = submission.comments
     for nomination in nominations:
         if nomination.banned_by is not None:
@@ -46,7 +46,7 @@ def generate_best_of_lists(r):
 
         # ignore bogus urls
         try:
-            entry = r.get_submission(corrected_url)
+            entry = r.submission(url=corrected_url)
         except:  # noqa
             continue
 
@@ -103,8 +103,8 @@ def generate_best_of_lists(r):
 
 
 def post_nominations_to_voting_thread(r):
-    voting_thread = r.get_submission(
-        submission_id=config['best_of_voting_post_id']
+    voting_thread = r.submission(
+        id=config['best_of_voting_post_id']
     )
     target_parent = ''
     with open(
@@ -115,10 +115,10 @@ def post_nominations_to_voting_thread(r):
     ) as f:
         for line in f:
             if '>>>' in line:
-                x = voting_thread.add_comment(line[3:].title()).distinguish()
-                target_parent = x['data']['things'][0]
+                target_parent = voting_thread.reply(line[3:].title())
+                target_parent.mod.distinguish()
             else:
-                target_parent.reply(line).distinguish()
+                target_parent.reply(line).mod.distinguish()
             time.sleep(1)
 
     print(
