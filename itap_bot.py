@@ -9,20 +9,15 @@ from modules.mlm_sidebar_update import run as mlm_sidebar_update
 from modules.mlm_submission_check import (
     run as mlm_submission_check
 )
+from modules.best_of import run as best_of_itap
 
 # system wide flags
 timekeeping = -1
 debug = True if '--debug' in sys.argv[1:] else False
-best_of = True if '--best-of' in sys.argv[1:] else False
 
 # Retrieve config
 config = get_config('core')
 config['monday'] = int(config['monday'])
-
-# Add-on Module/s
-if best_of:
-    import imp
-    best_of = imp.load_source('best_of', 'modules/best_of.py')
 
 # generate instance of praw
 print('Logging in...')
@@ -60,8 +55,8 @@ if __name__ == '__main__':
     schedule.every().minute.do(run_update)
     print('Running on schedule')
 
-    if best_of is not False:
-        best_of.run(r)
+    if '--best-of' in sys.argv[1:]:
+        best_of_itap(r)
 
     while True:
         schedule.run_pending()

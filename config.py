@@ -22,9 +22,9 @@ config = {
         'key_color': '#545452',
     },
     'best_of': {
-        'best_of_categories': 'portrait, landscape, animal, street',
+        'best_of_categories': ['portrait', 'landscape', 'animal', 'street'],
         'best_of_nomination_post_id': '56qtt0',
-        'best_of_voting_post_id': '56w6pu',
+        'best_of_voting_post_id': '7ick50',
         'best_of_year': '2016',
     }
 }

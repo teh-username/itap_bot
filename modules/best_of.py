@@ -1,18 +1,10 @@
-import configparser
 import datetime
 import re
 import time
-
-# Retrieve config
-configParser = configparser.ConfigParser()
-configParser.read('config.ini')
-config = dict(configParser.items('best-of-settings'))
-config['best_of_categories'] = config['best_of_categories'].replace(
-    ' ', ''
-).split(',')
+from utils.config_reader import get_config
 
 
-def generate_best_of_lists(r):
+def generate_best_of_lists(r, config):
     start_timestamp = (
         datetime.datetime(
             int(config['best_of_year']), 1, 1
@@ -102,7 +94,7 @@ def generate_best_of_lists(r):
     ))
 
 
-def post_nominations_to_voting_thread(r):
+def post_nominations_to_voting_thread(r, config):
     voting_thread = r.submission(
         id=config['best_of_voting_post_id']
     )
@@ -130,9 +122,10 @@ def post_nominations_to_voting_thread(r):
 
 def run(r):
     print('Starting best of processing...')
-    generate_best_of_lists(r)
+    config = get_config('best_of')
+    generate_best_of_lists(r, config)
     time.sleep(1)
-    post_nominations_to_voting_thread(r)
+    post_nominations_to_voting_thread(r, config)
 
 
 if __name__ == '__main__':
