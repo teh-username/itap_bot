@@ -9,12 +9,13 @@ Reddit bot for [r/itookapicture](https://www.reddit.com/r/itookapicture)
 * Aggregates top-level comments of a "Best Of" submission thread (turned off by default)
 
 ### Prerequisites
-* Python 2.7.9 and above (developed on Python 3.5.2)
+
+* Python 3.x (developed on Python 3.5.2)
 * [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html)
 * git
 
-
 ### Installation
+
 ```bash
 # clone repository
 git clone https://github.com/teh-username/itap_bot.git
@@ -31,15 +32,15 @@ itap/bin/pip install -r requirements.txt
 itap/bin/python itap_bot.py
 ```
 
-
 ### Additional Configs
-* Script retrieves credentials environment variable. Please set the following (more info [here](https://praw.readthedocs.io/en/latest/getting_started/authentication.html#script-application)):
-    * `ITAP_ID`
-    * `ITAP_SECRET`
-    * `ITAP_USERNAME`
-    * `ITAP_PASSWORD`
 
+* Script retrieves credentials via environment variable. Please set the following (more info [here](https://praw.readthedocs.io/en/latest/getting_started/authentication.html#script-application)):
+  * `ITAP_ID`
+  * `ITAP_SECRET`
+  * `ITAP_USERNAME`
+  * `ITAP_PASSWORD`
 
 ### Execution flags
+
 * `--debug` enables logging of relevant states of the bot.
 * `--best-of` enables one-time execution of "Best Of" feature.
