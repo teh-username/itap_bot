@@ -1,10 +1,35 @@
 import datetime
 import os
+import requests
+import time
+
 from utils.config_reader import get_config
 from utils.date_helpers import utc_timestamp_now
 from modules.mlm_sidebar_update import (
     compute_how_much_time_left
 )
+
+
+def get_submissions(subreddit, start, end):
+    api_url = (
+        "https://api.pushshift.io/reddit/search/submission/?"
+        "subreddit={}&before={}&after={}"
+    ).format(subreddit, end, start)
+    response = requests.get(api_url)
+    return response.json()['data']
+
+
+def is_violator(post, mlm_string):
+    if post.removed:
+        return False
+
+    if post.approved_by is not None:
+        return False
+
+    if mlm_string not in post.title:
+        return False
+
+    return True
 
 
 def notify_violating_submissions(r, config, last_ts):
@@ -13,9 +38,14 @@ def notify_violating_submissions(r, config, last_ts):
         datetime.datetime.utcnow(),
         int(config['monday'])
     )
-    subreddit = r.subreddit(config['subreddit'])
-    for post in subreddit.submissions(start=last_ts, end=cur_ts):
-        if config['mlm_string'] in post.title and post.approved_by is None:
+    submissions = get_submissions(
+        subreddit=config['subreddit'],
+        start=last_ts,
+        end=cur_ts
+    )
+    for submission in submissions:
+        post = r.submission(id=submission['id'])
+        if is_violator(post, config['mlm_string']):
             print('Detected violator: %s, processing...' % post.id)
             warn_string = config['warning_string'].replace(
                 '[time]',
@@ -23,6 +53,7 @@ def notify_violating_submissions(r, config, last_ts):
             ).replace('\n', '\n\n')
             post.reply(warn_string).mod.distinguish(sticky=True)
             post.mod.remove()
+            time.sleep(0.5)
 
 
 def get_last_timestamp(config):

@@ -1,5 +1,6 @@
 import os
 import time
+import traceback
 import sys
 import praw
 import schedule
@@ -49,7 +50,7 @@ def run_update():
         mlm_sidebar_update(r)
         mlm_submission_check(r)
     except Exception as e:  # noqa
-        print(str(e))
+        print(traceback.format_exc())
         print(config['hiccup_string'])
 
 

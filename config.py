@@ -18,7 +18,7 @@ config = {
         ),
         'state_filename': 'time.txt',
         'log_filename': 'log.txt',
-        'hiccup_string': 'Reddit hiccup! Will retry next iteration.',
+        'hiccup_string': 'Something went wrong. Will retry next iteration.',
         'key_color': '#545452',
     },
     'best_of': {
