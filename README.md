@@ -23,7 +23,7 @@ git clone https://github.com/teh-username/itap_bot.git
 cd itap_bot
 
 # setup virtual env for bot
-virtualenv itap
+virtualenv -p python3 itap
 
 # install requirements
 itap/bin/pip install -r requirements.txt
