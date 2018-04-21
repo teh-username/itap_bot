@@ -20,10 +20,10 @@ def get_submissions(subreddit, start, end):
 
 
 def is_violator(post, mlm_string):
-    if post.removed:
+    if post.approved_by is not None:
         return False
 
-    if post.approved_by is not None:
+    if post.banned_by is not None:
         return False
 
     if mlm_string not in post.title:
