@@ -15,6 +15,7 @@ def get_submissions(subreddit, start, end):
         "https://api.pushshift.io/reddit/search/submission/?"
         "subreddit={}&before={}&after={}"
     ).format(subreddit, end, start)
+    print('Getting submissions from %s' % api_url)
     response = requests.get(api_url)
     return response.json()['data']
 
