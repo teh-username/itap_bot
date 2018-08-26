@@ -10,6 +10,8 @@ from modules.mlm_submission_check import (
     run as mlm_submission_check
 )
 from modules.best_of import run as best_of_itap
+from modules.slack_bot import send_error_log
+
 
 # system wide flags
 timekeeping = -1
@@ -18,6 +20,7 @@ debug = True if '--debug' in sys.argv[1:] else False
 # Retrieve config
 config = get_config('core')
 config['monday'] = int(config['monday'])
+slack_config = get_config('slack_bot')
 
 # generate instance of praw
 print('Logging in...')
@@ -45,6 +48,11 @@ def run_update():
         mlm_sidebar_update(r)
         mlm_submission_check(r)
     except Exception as e:  # noqa
+        send_error_log(
+            slack_config['token'],
+            slack_config['channel'],
+            traceback.format_exc()
+        )
         print(traceback.format_exc())
         print(config['hiccup_string'])
 

@@ -26,5 +26,9 @@ config = {
         'best_of_nomination_post_id': '56qtt0',
         'best_of_voting_post_id': '7ick50',
         'best_of_year': '2016',
+    },
+    'slack_bot': {
+        'token': '',
+        'channel': '',
     }
 }

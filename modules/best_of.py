@@ -3,6 +3,8 @@ import re
 import time
 from utils.config_reader import get_config
 
+from praw.exceptions import ClientException
+
 
 def generate_best_of_lists(r, config):
     start_timestamp = (
@@ -39,7 +41,7 @@ def generate_best_of_lists(r, config):
         # ignore bogus urls
         try:
             entry = r.submission(url=corrected_url)
-        except:  # noqa
+        except ClientException:
             continue
 
         # ignore posts older than this year
