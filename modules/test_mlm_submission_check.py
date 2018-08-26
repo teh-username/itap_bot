@@ -1,3 +1,4 @@
+from datetime import datetime
 import unittest
 from unittest.mock import patch, mock_open
 from modules import mlm_submission_check
@@ -47,24 +48,52 @@ class MLMSubmissionCheckModuleTestCase(unittest.TestCase):
         self.assertEqual(last_ts, '15')
 
     @patch('modules.mlm_submission_check.datetime.datetime')
-    def test_should_not_check_for_submissions(
+    def test_should_not_check_if_monday(
             self,
             datetime_mock
     ):
-        datetime_mock.utcnow.return_value.weekday.return_value = 1
+        datetime_mock.utcnow.return_value = datetime(2018, 8, 27)
         self.assertEqual(
             mlm_submission_check.should_check_submissions({
                 'monday': 0
             }),
-            True
+            False
         )
 
     @patch('modules.mlm_submission_check.datetime.datetime')
-    def test_should_check_for_submissions(
+    def test_should_check_wednesday_onwards(
             self,
             datetime_mock
     ):
-        datetime_mock.utcnow.return_value.weekday.return_value = 0
+        for i in [2, 3, 4, 5, 6]:
+            datetime_mock.utcnow.return_value = datetime(2018, 8, 20+i)
+            self.assertEqual(
+                mlm_submission_check.should_check_submissions({
+                    'monday': 0
+                }),
+                True
+            )
+
+    @patch('modules.mlm_submission_check.datetime.datetime')
+    def test_should_check_tuesday_beyond_first_hour(
+            self,
+            datetime_mock
+    ):
+        for i in [1, 2, 3, 4, 5]:
+            datetime_mock.utcnow.return_value = datetime(2018, 8, 28, i)
+            self.assertEqual(
+                mlm_submission_check.should_check_submissions({
+                    'monday': 0
+                }),
+                True
+            )
+
+    @patch('modules.mlm_submission_check.datetime.datetime')
+    def test_should_not_check_tuesday_first_hour(
+            self,
+            datetime_mock
+    ):
+        datetime_mock.utcnow.return_value = datetime(2018, 8, 28, 0)
         self.assertEqual(
             mlm_submission_check.should_check_submissions({
                 'monday': 0

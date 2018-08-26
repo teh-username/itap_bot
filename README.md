@@ -44,3 +44,7 @@ itap/bin/python itap_bot.py
 
 * `--debug` enables logging of relevant states of the bot.
 * `--best-of` enables one-time execution of "Best Of" feature.
+
+### Running the tests
+
+`itap/bin/python -m unittest`

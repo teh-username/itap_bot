@@ -73,10 +73,21 @@ def get_last_timestamp(config):
 
 
 def should_check_submissions(config):
-    return (
-        datetime.datetime.utcnow().weekday() !=
-        int(config['monday'])
-    )
+    weekday = datetime.datetime.utcnow().weekday()
+    mlm_day = int(config['monday'])
+    # If MLM day, don't check
+    if weekday == mlm_day:
+        return False
+
+    # If Wednesday onwards, check
+    if weekday >= mlm_day + 2:
+        return True
+
+    # If Tuesday and above 1am, check
+    if datetime.datetime.utcnow().hour >= 1:
+        return True
+
+    return False
 
 
 def run(r):
